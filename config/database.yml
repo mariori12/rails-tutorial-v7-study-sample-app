@@ -20,6 +20,6 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+# Production (PostgreSQL on Render)
 production:
-  <<: *default
-  database: db/production.sqlite3
+  url: <%= ENV['DATABASE_URL'] %>
