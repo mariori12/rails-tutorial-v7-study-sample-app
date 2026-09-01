@@ -1,5 +1,16 @@
 {
-  "rubyLsp.enabledFeatures": {
-    "diagnostics": false
+  "rubyLsp.rubyVersionManager": {
+    "identifier": "mise"
+  },
+  "rubyLsp.formatter": "rubocop_internal",
+  "rubyLsp.linters": [
+    "rubocop_internal"
+  ],
+  "rubocop.mode": "disable",
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   }
 }
