@@ -17,15 +17,18 @@ gem 'stimulus-rails',  '1.2.1'
 gem 'turbo-rails',     '1.4.0'
 
 group :development, :test do
-  gem 'debug',   '1.7.1', platforms: %i[mri mingw x64_mingw]
-  gem 'reline',  '0.5.10'
-  gem 'sqlite3', '1.6.1'
+  gem 'debug',            '1.7.1', platforms: %i[mri windows]
+  gem 'reline',           '0.5.10'
+  gem 'rubocop',          require: false
+  gem 'rubocop-capybara', require: false
+  gem 'rubocop-minitest', require: false
+  gem 'rubocop-rails',    require: false
+  gem 'sqlite3',          '1.6.1'
 end
 
 group :development do
   gem 'irb',                 '1.10.0'
-  gem 'repl_type_completor', '0.1.2'
-  gem 'solargraph',          '0.53.4'
+  gem 'repl_type_completor', '0.1.7'
   gem 'web-console',         '4.2.0'
 end
 
@@ -36,9 +39,6 @@ group :test do
   gem 'minitest',                 '5.18.0'
   gem 'minitest-reporters',       '1.6.0'
   gem 'rails-controller-testing', '1.0.5'
-  gem 'rubocop-capybara'
-  gem 'rubocop-minitest'
-  gem 'rubocop-rails'
   gem 'selenium-webdriver', '4.8.3'
   gem 'webdrivers', '5.2.0'
 end
@@ -48,4 +48,4 @@ group :production do
 end
 
 # Windows ではタイムゾーン情報用の tzinfo-data gem を含める必要がある
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'tzinfo-data', platforms: %i[windows jruby]
