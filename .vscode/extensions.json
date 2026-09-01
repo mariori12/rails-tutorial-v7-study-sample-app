@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "Shopify.ruby-lsp"
+  ],
+  "unwantedRecommendations": [
+    "castwide.solargraph",
+    "rubocop.vscode-rubocop"
+  ]
+}
