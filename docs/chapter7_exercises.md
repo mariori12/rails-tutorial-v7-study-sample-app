@@ -59,3 +59,21 @@ TurboでPOST後にGETへ移動できるよう303応答を使用し、成功メ�
   演習に従い`content_tag`でflashのHTMLを生成した。
   リダイレクトを外すと応答のテストが失敗し、`@user.save`を`false`にすると
   `User.count`が1増えないため`assert_difference`が失敗することを確認して元に戻した。
+
+## 7.5 プロのデプロイ
+
+- **7.5.1**: 本番環境で`config.force_ssl = true`を設定した。
+  RailsのSSLミドルウェアがHTTPをHTTPSへリダイレクトし、HTTPSを通すことをローカルで検証した。
+- **7.5.2**: 資料どおりPumaのworker数を`WEB_CONCURRENCY`で指定し、既定値を4にした。
+  `preload_app!`を有効にし、Procfileの起動を`puma -C config/puma.rb`に変更した。
+  環境変数でworker数を変更できることも検証した。
+- **7.5.3**: productionのPostgreSQL用`pg`と`DATABASE_URL`は既に設定済みのため維持した。
+  ダミーの接続URLを使い、DBへ接続せず本番設定の起動とアダプター選択を確認した。
+- **7.5.4**: RenderのBuild Commandは`./bin/render-build.sh`、Start Commandは
+  `bundle exec puma -C config/puma.rb`を指定する。
+  本番の`DATABASE_URL`と`RAILS_MASTER_KEY`または適切な秘密鍵の設定が必要になる。
+  worker数は利用するサービスのメモリに合わせて`WEB_CONCURRENCY`で調整する。
+
+これまでと同様、ローカル実装・テスト・コミットまでを実施した。
+mainへのマージ、push、Render設定変更・デプロイは行っていない。
+7.5の演習にある公開URLのHTTPS確認、本番での登録・Gravatar表示確認は未実施である。
