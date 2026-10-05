@@ -17,5 +17,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get new' do
     get signup_path
     assert_response :success
+    assert_select 'form[action=?][method=post]', users_path do
+      assert_select 'input[name=?][type=text]', 'user[name]'
+      assert_select 'input[name=?][type=email]', 'user[email]'
+      assert_select 'input[name=?][type=password]', 'user[password]'
+      assert_select 'input[name=?][type=password]', 'user[password_confirmation]'
+      assert_select 'input[type=submit][value=?]', 'Create my account'
+    end
   end
 end
