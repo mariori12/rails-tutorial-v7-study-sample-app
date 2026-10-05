@@ -12,6 +12,7 @@
     <div class="container">
       <%= yield %>
       <%= render 'layouts/footer' %>
+      <%= debug(request.filtered_parameters) if Rails.env.development? %>
     </div>
   </body>
 </html>
