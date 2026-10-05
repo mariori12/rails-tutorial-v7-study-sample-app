@@ -4,7 +4,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name: 'Example User', email: 'user@example.com')
+    @user = User.new(name: 'Example User', email: 'user@example.com',
+                     password: 'password', password_confirmation: 'password')
   end
 
   test 'should be valid' do
@@ -75,5 +76,50 @@ class UserTest < ActiveSupport::TestCase
     assert_raises ActiveRecord::RecordNotUnique do
       duplicate_user.save!(validate: false)
     end
+  end
+
+  test 'password should be present' do
+    @user.password = @user.password_confirmation = nil
+    assert_not @user.valid?
+  end
+
+  test 'password should not be blank' do
+    @user.password = @user.password_confirmation = ' ' * 8
+    assert_not @user.valid?
+  end
+
+  test 'password should have a minimum length of eight characters' do
+    @user.password = @user.password_confirmation = 'a' * 7
+    assert_not @user.valid?
+  end
+
+  test 'eight character password should be valid' do
+    @user.password = @user.password_confirmation = 'a' * 8
+    assert @user.valid?
+  end
+
+  test 'password confirmation should match' do
+    @user.password_confirmation = 'different'
+    assert_not @user.valid?
+  end
+
+  test 'password should not exceed bcrypt byte limit' do
+    @user.password = @user.password_confirmation = 'a' * 73
+    assert_not @user.valid?
+    @user.password = @user.password_confirmation = 'あ' * 25
+    assert_not @user.valid?
+    @user.password = @user.password_confirmation = 'a' * 72
+    assert @user.valid?
+    @user.password = @user.password_confirmation = 'あ' * 24
+    assert @user.valid?
+  end
+
+  test 'saved user should authenticate with the correct password' do
+    @user.save!
+    saved_user = User.find(@user.id)
+    assert_nil saved_user.password
+    assert_not_equal 'password', saved_user.password_digest
+    assert_equal saved_user, saved_user.authenticate('password')
+    assert_equal false, saved_user.authenticate('incorrect')
   end
 end

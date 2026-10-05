@@ -9,4 +9,18 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+
+  has_secure_password
+  validates :password, presence: true, length: { minimum: 8 }
+  validate :password_byte_length
+
+  private
+
+  # Rails 7.0 checks character count, but bcrypt limits passwords to 72 bytes.
+  def password_byte_length
+    limit = ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
+    return if password.nil? || password.bytesize <= limit
+
+    errors.add(:password, :too_long_bytes, count: limit)
+  end
 end
