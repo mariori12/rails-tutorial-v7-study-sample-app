@@ -2,6 +2,8 @@
 
 # ApplicationController is the base controller for all application controllers.
 class ApplicationController < ActionController::Base
+  include SessionsHelper
+
   def hello
     render html: 'hello, world!'
   end
