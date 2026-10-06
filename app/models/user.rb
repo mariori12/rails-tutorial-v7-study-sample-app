@@ -14,6 +14,11 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 8 }
   validate :password_byte_length
 
+  def self.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+
   private
 
   # Rails 7.0 checks character count, but bcrypt limits passwords to 72 bytes.

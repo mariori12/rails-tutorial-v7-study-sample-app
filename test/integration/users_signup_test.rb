@@ -10,6 +10,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                         password: 'password', password_confirmation: 'password' } }
     end
     user = User.find_by!(email: 'user@example.com')
+    assert is_logged_in?
+    assert_equal user.id, session[:user_id]
     assert_equal user, user.authenticate('password')
     assert_response :see_other
     assert_redirected_to user_url(user)
